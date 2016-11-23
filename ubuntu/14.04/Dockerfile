@@ -2,11 +2,38 @@
 FROM ubuntu:14.04
 
 RUN apt-get -y --force-yes update
-
 RUN apt-get install -y --force-yes \
+    software-properties-common python-software-properties
 
-sudo apt-get install software-properties-common python-software-properties
-sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+RUN apt-get -y --force-yes update
+RUN apt-get -y --force-yes install \
+    git \
+    cmake \
+    make \
+    libboost-all-dev \
+    libxml2-dev \
+    libxml++2.6-dev \
+    libsqlite3-dev \
+    libhdf5-serial-dev \
+    libbz2-dev \
+    coinor-libcbc-dev \
+    coinor-libcoinutils-dev \
+    coinor-libosi-dev \
+    coinor-libclp-dev \
+    coinor-libcgl-dev \
+    libblas-dev \
+    liblapack-dev \
+    g++ \
+    libgoogle-perftools-dev \
+    git \
+    python3 \
+    python3-dev \
+    python3-tables \
+    python3-pandas \
+    python3-numpy \
+    python3-nose \
+    python3-jinja2 \
+    cython3
 
-sudo apt-get -y --force-yes update
-sudo apt-get isntall git
+RUN rm /usr/bin/python
+RUN ln -s /usr/bin/python3 /usr/bin/python
