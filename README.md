@@ -2,12 +2,9 @@
 DOCKER CONFIG
 =============
 
-
 Suppose to host Dockerfile to fire quickly docker image
 
-
 usefull tips:
-<<<<<<< HEAD
 
 - *launch image - do stuff - exit - sset container name*
 ```
