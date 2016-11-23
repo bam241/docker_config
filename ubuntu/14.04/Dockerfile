@@ -34,6 +34,24 @@ RUN apt-get -y --force-yes install \
     python3-nose \
     python3-jinja2 \
     cython3
-
 RUN rm /usr/bin/python
 RUN ln -s /usr/bin/python3 /usr/bin/python
+
+
+RUN apt-get install -y --force-yes \
+  vim \
+  zsh
+RUN locale-gen en_US.UTF-8
+WORKDIR /root
+RUN git clone https://github.com/Baaaaam/zsh_config.git .zsh_config
+WORKDIR /root/.zsh_config
+RUN git fetch
+RUN git checkout docker
+RUN ./install.sh
+WORKDIR /root
+RUN chsh -s /usr/bin/zsh root
+
+
+
+# Define default command
+CMD ["/bin/zsh"]

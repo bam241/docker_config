@@ -30,3 +30,9 @@ docker docker tag old-name/old-tag new-name/new-tag
 docker push name-tag
 ```
 
+
+-no-cache is currently bool, so this simply extends the existing behaviour.
+
+docker build --no-cache - same behaviour as before: ignores cache
+docker build --no-cache someRegex - ignores any RUN or ADD commands that match
+someRegex
