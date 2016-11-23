@@ -18,12 +18,18 @@ docker ps -a
 docker commit <container_id> new_image:tag_name
 ```
 
-- * build img + mane/tag it *
-`docker build -t name/tag .`
+- *build img + mane/tag it*
+```
+docker build -t name/tag .
+```
 
-- * re- mane/tag it *
-`docker docker tag old-name/old-tag new-name/new-tag`
+- *re- mane/tag it *
+```
+docker docker tag old-name/old-tag new-name/new-tag
+```
 
-- * push it - require login*
-`docker push name-tag`
+- *push it - require login*
+```
+docker push name-tag
+```
 
