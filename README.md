@@ -20,7 +20,7 @@ docker commit <container_id> new_image:tag_name
 docker build -t name/tag .
 ```
 
-- *re- mane/tag it *
+- *re- mane/tag it*
 ```
 docker docker tag old-name/old-tag new-name/new-tag
 ```
