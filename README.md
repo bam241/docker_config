@@ -4,6 +4,15 @@ DOCKER CONFIG
 
 Suppose to host Dockerfile to fire quickly docker image
 
+
+- *normal work process*
+```
+cd where_dockerfile_is
+docker build -t baaaaam/container_name .
+docker push baaaaam/container_name
+docker run -r -i baaaaam/container_name
+```
+
 usefull tips:
 
 - *launch image - do stuff - exit - sset container name*
@@ -30,13 +39,6 @@ docker docker tag old-name/old-tag new-name/new-tag
 docker push name-tag
 ```
 
-- *normal work process*
-```
-cd where_dockerfile_is
-docker build -t baaaaam/container_name .
-docker push baaaaam/container_name
-docker run -r -i baaaaam/container_name
-```
 
 
 - *note for later*
