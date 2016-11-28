@@ -30,7 +30,7 @@ docker docker tag old-name/old-tag new-name/new-tag
 docker push name-tag
 ```
 
-- *normal work process"
+- *normal work process*
 ```
 cd where_dockerfile_is
 docker build -t baaaaam/container_name .
