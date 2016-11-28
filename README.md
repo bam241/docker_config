@@ -7,9 +7,12 @@ Suppose to host Dockerfile to fire quickly docker image
 
 - *normal work process*
 ```
+# build the docker container
 cd where_dockerfile_is
 docker build -t baaaaam/container_name .
+# push the builded container to dockerhub
 docker push baaaaam/container_name
+# open a shell on a specific container
 docker run -r -i baaaaam/container_name
 ```
 
