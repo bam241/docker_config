@@ -1,5 +1,5 @@
 
-FROM ubuntu:14.04
+FROM ubuntu:16.04
 
 RUN apt-get -y --force-yes update
 RUN apt-get install -y --force-yes \
@@ -25,19 +25,9 @@ RUN apt-get -y --force-yes install \
     liblapack-dev \
     g++ \
     libgoogle-perftools-dev \
-    git \
-    python3 \
-    python3-dev \
-    python3-tables \
-    python3-pandas \
-    python3-numpy \
-    python3-nose \
-    python3-jinja2 \
-    cython3
-RUN rm /usr/bin/python
-RUN ln -s /usr/bin/python3 /usr/bin/python
+    git
 
-RUN sudo add-apt-repository ppa:jonathonf/vim
+RUN add-apt-repository ppa:jonathonf/vim
 RUN apt-get -y --force-yes update
 RUN apt-get install -y --force-yes \
   vim \

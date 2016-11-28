@@ -1,5 +1,5 @@
 
-FROM ubuntu:14.04
+FROM ubuntu:16.04
 
 RUN apt-get -y --force-yes update
 RUN apt-get install -y --force-yes \
@@ -37,7 +37,7 @@ RUN apt-get -y --force-yes install \
 RUN rm /usr/bin/python
 RUN ln -s /usr/bin/python3 /usr/bin/python
 
-RUN sudo add-apt-repository ppa:jonathonf/vim
+RUN add-apt-repository ppa:jonathonf/vim
 RUN apt-get -y --force-yes update
 RUN apt-get install -y --force-yes \
   vim \
