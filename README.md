@@ -42,7 +42,11 @@ docker docker tag old-name/old-tag new-name/new-tag
 docker push name-tag
 ```
 
-
+- *start a docker from ps -a*
+```
+docker start name
+docker attach name
+```
 
 - *note for later*
 ```
