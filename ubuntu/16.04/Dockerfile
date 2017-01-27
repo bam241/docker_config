@@ -1,12 +1,12 @@
 
 FROM ubuntu:16.04
 
-RUN apt-get -y --force-yes update
-RUN apt-get install -y --force-yes \
+RUN apt-get -y update
+RUN apt-get install -y \
     software-properties-common python-software-properties
 
-RUN apt-get -y --force-yes update
-RUN apt-get -y --force-yes install \
+RUN apt-get -y update
+RUN apt-get -y install \
     git \
     cmake \
     make \
@@ -33,13 +33,14 @@ RUN apt-get -y --force-yes install \
     python3-numpy \
     python3-nose \
     python3-jinja2 \
-    cython3
+    python3-pip
 RUN rm /usr/bin/python
 RUN ln -s /usr/bin/python3 /usr/bin/python
+RUN pip3 install cython
 
 RUN add-apt-repository ppa:jonathonf/vim
-RUN apt-get -y --force-yes update
-RUN apt-get install -y --force-yes \
+RUN apt-get -y update
+RUN apt-get install -y \
   vim \
   ack-grep \
   zsh
