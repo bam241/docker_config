@@ -1,12 +1,12 @@
 
 FROM ubuntu:14.04
 
-RUN apt-get -y --force-yes update
-RUN apt-get install -y --force-yes \
+RUN apt-get -y update
+RUN apt-get install -y \
     software-properties-common python-software-properties
 
-RUN apt-get -y --force-yes update
-RUN apt-get -y --force-yes install \
+RUN apt-get -y update
+RUN apt-get -y install \
     git \
     cmake \
     make \
@@ -26,7 +26,7 @@ RUN apt-get -y --force-yes install \
     g++ \
     libgoogle-perftools-dev \
     git
-RUN apt-get -y --force-yes install \
+RUN apt-get -y install \
     cmake \
     make \
     libboost-all-dev \
@@ -50,10 +50,11 @@ RUN apt-get -y --force-yes install \
     python-numpy \
     python-nose \
     python-jinja2 \
-    cython
+    python-pip
+RUN pip install cython
 RUN sudo add-apt-repository ppa:jonathonf/vim
-RUN apt-get -y --force-yes update
-RUN apt-get install -y --force-yes \
+RUN apt-get -y update
+RUN apt-get install -y \
   vim \
   ack-grep \
   zsh
