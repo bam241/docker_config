@@ -35,6 +35,8 @@ RUN apt-get -y install \
     python3-nose \
     python3-jinja2 \
     python3-pip
+RUN rm /usr/bin/python
+RUN ln -s /usr/bin/python3 /usr/bin/python
 RUN pip3 install cython
 
 RUN add-apt-repository ppa:jonathonf/vim
