@@ -56,6 +56,15 @@ RUN cmake --build . --target VDT
 RUN cmake --build . --target install
 
 
+# CLASS
+WORKDIR /root
+RUN git clone https://gitlab.in2p3.fr/BaM/CLASS.git
+WORKDIR /root/CLASS/
+RUN git remote add upstream https://gitlab.in2p3.fr/SENS/CLASS.git
+RUN git fetch --all
+RUN git checkout cyclass
+RUN ./install.sh --clean --build
+
 
 #RUN apt-get update --fix-missing && apt-get install -y wget bzip2 ca-certificates \
 #   libglib2.0-0 libxext6 libsm6 libxrender1
