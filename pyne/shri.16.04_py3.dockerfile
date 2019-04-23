@@ -16,8 +16,14 @@ RUN apt-get install -y --fix-missing \
     autoconf libtool python-setuptools python3-pip doxygen 
 RUN apt-get clean -y
                        
-
-RUN pip3 install sphinx cloud_sptheme prettytable sphinxcontrib_bibtex numpydoc nbconvert 
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 10
+RUN pip3 install sphinx \
+    cloud_sptheme \
+    prettytable \
+    sphinxcontrib_bibtex \
+    numpydoc \
+    nbconvert \
+    numpy 
 
 # make starting directory
 RUN mkdir -p $HOME/opt
@@ -39,7 +45,7 @@ RUN cd $HOME/opt \
   && cd .. \
   && mkdir build \
   && cd build \
-  && ../moab/configure --enable-shared --enable-dagmc \
+  && ../moab/configure --enable-shared --enable-dagmc  --enable-pymoab \
                        --with-hdf5=/usr/lib/x86_64-linux-gnu/hdf5/serial \
                        --prefix=$HOME/opt/moab \
   && make -j 3 \
@@ -66,13 +72,14 @@ RUN cd /root \\
     && make install
 
 # Install PyNE
+RUN pip3 install cython --force-reinstall
 RUN cd $HOME/opt \
-    && git clone https://github.com/cnerg/pyne.git \
+    && git clone https://github.com/bam241/pyne.git \
     && cd pyne \
-    && git checkout pymoab_cleanup \
+    && git checkout kkiesling-python3 \
     && python3 setup.py install --user \
-                                -DMOAB_LIBRARY=$HOME/opt/moab/lib \
-                                -DMOAB_INCLUDE_DIR=$HOME/opt/moab/include
+                                --moab $HOME/opt/moab --dagmc $HOME/opt/dagmc --clean
+ENV PYTHONPATH=$HOME/opt/moab/lib/python3.6/site-packages/
 
 ENV PATH $HOME/.local/bin:$PATH
 RUN cd $HOME && nuc_data_make
