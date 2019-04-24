@@ -1,4 +1,4 @@
-FROM bam241/ubuntu_18.04:latest
+FROM ubuntu/ubuntu_18.04:latest
 
 # CLASS
 WORKDIR /root/work/app/
