@@ -1,50 +1,33 @@
 
 FROM jupyter/minimal-notebook
 USER root
-RUN apt-get -y update
-RUN apt-get install -y \
-    software-properties-common
+#
+# apt packages
+#
+RUN apt-get update && \
+    apt-get install -y g++ gcc vim nano && \
+    apt-get clean
 
 RUN apt-get -y update
 RUN echo "US/Central" > /etc/timezone
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y tzdata &&\
-    apt-get -y install \
-    git \
-    cmake \
-    make \
-    libboost-all-dev \
-    libxml2-dev \
-    libxml++2.6-dev \
-    libsqlite3-dev \
-    libhdf5-serial-dev \
-    libbz2-dev \
-    coinor-libcbc-dev \
-    coinor-libcoinutils-dev \
-    coinor-libosi-dev \
-    coinor-libclp-dev \
-    coinor-libcgl-dev \
-    libblas-dev \
-    liblapack-dev \
-    qtbase5-dev \
-    g++ \
-    libgoogle-perftools-dev \
-    git \
-    python3-dev \
-    python3-tables \
-    python3-pandas \
-    python3-numpy \
-    python3-nose \
-    python3-jinja2 \
-    python3-pip
-RUN pip3 install cython &&\
-    rm -rf /usr/bin/python &&\
-    ln -s /usr/bin/python3 /usr/bin/python
+#remove pinned version of python
+RUN echo "tini 0.18.0" > /opt/conda/conda-meta/pinned 
+
+# install cyclus deps
+RUN conda install -y openssh gxx_linux-64 gcc_linux-64 cmake make docker-pycreds git xo python-json-logger \
+	                     python=3.6 glibmm glib=2.56 libxml2 libxmlpp libblas \
+	                     libcblas liblapack pkg-config coincbc=2.9 boost-cpp hdf5 \
+	                     sqlite pcre gettext bzip2 xz setuptools nose pytables \
+	                     pandas jinja2 cython websockets pprintpp &&\
+    conda clean -y --all
 
 # CYCLUS
 RUN mkdir -p /root/cyclus&&\
     cd /root/cyclus &&\
-    git clone https://github.com/cyclus/cyclus &&\
+    git clone https://github.com/bam241/cyclus &&\
     cd /root/cyclus/cyclus &&\
+    git fetch --all &&\
+    git checkout fix_conda &&\
     python3 install.py --clean-build -j2
 
 # CYCAMOREr
