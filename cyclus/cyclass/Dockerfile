@@ -1,4 +1,4 @@
-FROM ubuntu/ubuntu_18.04:latest
+FROM bam241/ubuntu_18.04:latest
 
 # CLASS
 WORKDIR /root/work/app/
@@ -19,7 +19,7 @@ RUN mkdir -p /root/work/app/cyclus&&\
     git remote add upstream https://github.com/cyclus/cyclus &&\
     git fetch --all &&\
     git pull &&\
-    git checkout hot_fix &&\
+    git checkout master &&\
     python3 install.py --clean-build -j2
 
 # CYCAMORE
