@@ -12,6 +12,11 @@ RUN mkdir -p /root/work/app/cyclus&&\
     git checkout master &&\
     python3 install.py --clean-build -j2
 
+ENV HOME /root/
+ENV PATH ${PATH}:${HOME}/.local/bin/
+ENV PYTHONPATH ${PYTHONPATH}:${HOME}/.local/lib/python3.6/site-packages/
+ENV LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:${HOME}/.local/lib/
+
 # CYCAMORE
 #WORKDIR /root/work/app/cyclus &&\
 #    git clone https://github.com/bam241/cycamore &&\
