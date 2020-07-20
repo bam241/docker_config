@@ -37,9 +37,11 @@ RUN useradd -ms /bin/bash mouginot
 RUN echo "PS1='$ '" >  /home/mouginot/.bashrc
 WORKDIR /home/mouginot
 RUN wget http://swcarpentry.github.io/shell-novice/data/data-shell.zip
-RUN chown -R mouginot /home/mouginot
 RUN mkdir Desktop
 run mv data-shell.zip Desktop && cd Desktop && unzip data-shell.zip && rm data-shell.zip
+RUN chown -R mouginot /home/mouginot
 
+
+USER mouginot
 # Define default command
 CMD ["/bin/bash"]
