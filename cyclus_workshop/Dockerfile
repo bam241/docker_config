@@ -8,3 +8,6 @@ RUN mv /cycamore cyclus/
 RUN mv /cymetric cyclus/
 RUN git clone https://github.com/bam241/cycstub_test ./cyclus/cycstub_test
 ENV LD_LIBRARY_PATH=/root/.local/lib
+RUN apt-get update
+RUN apt-get install -y graphviz --fix-missing
+RUN pip install -y graphviz matplotlib
