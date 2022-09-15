@@ -1,7 +1,8 @@
 
 FROM ubuntu:18.04
 
-RUN apt-get -y update && \
+RUN mkdir -p /root/.local/lib/python3.6/site-packages/ &&\
+    apt-get -y update && \
     apt-get install -y \
     software-properties-common && \
     apt-get -y update && \
@@ -34,8 +35,9 @@ RUN apt-get -y update && \
     python3-numpy \
     python3-nose \
     python3-jinja2 \
+    python3-notebook jupyter jupyter-core python-ipykernel \
     python3-pip && \
-    pip3 install cython &&\
+    pip3 install cython==0.28.5 &&\
     rm -rf /usr/bin/python &&\
     ln -s /usr/bin/python3 /usr/bin/python &&\
     add-apt-repository ppa:jonathonf/vim &&\
