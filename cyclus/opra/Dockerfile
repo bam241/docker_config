@@ -2,6 +2,7 @@
 FROM ubuntu:18.04
 
 RUN mkdir -p /root/.local/lib/python3.6/site-packages/ &&\
+    apt-get clean && \
     apt-get -y update && \
     apt-get install -y \
     software-properties-common && \
@@ -47,29 +48,41 @@ RUN mkdir -p /root/.local/lib/python3.6/site-packages/ &&\
     vim \
     ack-grep \
     zsh &&\
-    apt-get clean &&\
-    mkdir -p /root/cyclus&&\
+    apt-get clean 
+    
+RUN mkdir -p /root/cyclus&&\
     cd /root/cyclus &&\
-    git clone https://github.com/cyclus/cyclus &&\
+    git clone https://github.com/bam241/cyclus &&\
     cd /root/cyclus/cyclus &&\
     python3 install.py --clean-build -j2 && \
     cd /root/cyclus &&\
     git clone https://github.com/cyclus/cycamore &&\
     cd /root/cyclus/cycamore &&\
-    python3 install.py --clean-build -j2 &&\
-    cd /root/cyclus &&\
-    git clone https://github.com/cnerg/cycvt &&\
+    python3 install.py --clean-build -j2
+
+RUN cd root/cyclus \
+    && apt-get install -y gfortran \
+    && git clone https://github.com/pyne/pyne.git \
+    && cd pyne \
+    && python setup.py install --user
+
+RUN cd /root/cyclus &&\
+    git clone https://github.com/bam241/cycvt         &&\
     cd /root/cyclus/cycvt &&\
-    python3 install.py --clean-build -j2 &&\
-    cd /root/cyclus &&\
-    git clone https://github.com/cyclus/cymetric &&\
+    git checkout fix_u8_eq &&\
+    python3 install.py --clean-build -j2
+
+RUN cd /root/cyclus &&\
+    git clone https://github.com/bam241/cymetric    &&\
     cd /root/cyclus/cymetric &&\
+    git checkout clean_import &&\
     python3 setup.py install --user
+
 
 ENV PYTHONPATH="/root/.local/lib/python3.6/site-packages"
 ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/root/.local/lib/"
 ENV PATH="/root/.local/bin:$PATH"
 # Define default command
 WORKDIR "/root/opra_sims/"
-CMD ["/bin/bash"]
 ENTRYPOINT ["/usr/bin/jupyter", "notebook", "--ip", "0.0.0.0", "--no-browser", "--allow-root"]
+CMD ["--NotebookApp.token=abcd"]
