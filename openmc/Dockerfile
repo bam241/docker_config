@@ -1,4 +1,4 @@
-FROM ubuntu:24.04 AS ubuntu_24.04-moab
+FROM ubuntu:24.04 AS ubuntu_24.04-deps
 
 # Install OpenMC dependencies
 RUN apt update && \
@@ -37,6 +37,7 @@ RUN mkdir -p ${HDF5_BLD_DIR}/build && \
     cd && \
     rm -rf ${HDF5_BLD_DIR} ${HDF5_SRC_DIR} 
 
+FROM ubuntu_24.04-deps AS ubuntu_24.04-moab
 
 ENV MOAB_VERSION=5.4.1
 ENV MOAB_SRC_DIR=${SRC_DIR}/moab
