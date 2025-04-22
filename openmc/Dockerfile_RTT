@@ -1,0 +1,80 @@
+
+FROM bam241/ubuntu_24.04_deps AS ubuntu_24.04-moab
+
+ENV MOAB_VERSION=topology_reading
+ENV MOAB_SRC_DIR=${SRC_DIR}/moab
+ENV MOAB_BLD_DIR=${BLD_DIR}/moab
+ENV PYTHONPATH="/root/.local/local/lib/python3.12/dist-packages"
+
+RUN mkdir -p ${MOAB_BLD_DIR} && \
+    cd ${MOAB_BLD_DIR} && \
+    git clone -b ${MOAB_VERSION} --depth 1 https://bitbucket.org/bam241/moab.git ${MOAB_SRC_DIR} && \
+    cmake ${MOAB_SRC_DIR} \
+        -DCMAKE_INSTALL_RPATH=${INSTALL_DIR}/lib:${INSTALL_DIR}/lib \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DENABLE_HDF5=ON \
+        -DHDF5_ROOT=${INSTALL_DIR} \
+        -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} \
+        -DENABLE_BLASLAPACK=OFF \
+        -DBUILD_SHARED_LIBS=ON \
+        -DENABLE_FORTRAN=OFF\
+        -DENABLE_PYMOAB=ON \
+        -DPYMOAB_PREFIX=${INSTALL_DIR} && \
+    make -j${CI_JOBS} && \
+    make install && \
+    cd && \
+    rm -rf ${MOAB_BLD_DIR}
+
+
+FROM ubuntu_24.04-moab AS ubuntu_24.04-dagmc
+
+ENV DAGMC_VERSION=develop
+ENV DAGMC_SRC_DIR=${SRC_DIR}/dagmc
+ENV DAGMC_BLD_DIR=${BLD_DIR}/dagmc
+
+RUN git clone -b ${DAGMC_VERSION} --depth 1 https://github.com/svalinn/DAGMC.git ${DAGMC_SRC_DIR} && \
+    cd ${DAGMC_SRC_DIR} && \
+    git submodule update --init && \
+    mkdir -p ${DAGMC_BLD_DIR} && \
+    cd ${DAGMC_BLD_DIR} && \
+    cmake ${DAGMC_SRC_DIR} \
+        -DMOAB_DIR=${INSTALL_DIR} \
+        -DBUILD_CI_TESTS=ON \
+        -DBUILD_MW_REG_TESTS=OFF \
+        -DBUILD_STATIC_EXE=OFF \
+        -DBUILD_STATIC_LIBS=OFF \
+        -DCMAKE_Fortran_COMPILER=gfortran \
+        -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} && \
+    make -j${CI_JOBS} && \
+    make install && \
+    cd && \
+    rm -rf ${DAGMC_BLD_DIR} ${DAGMC_SRC_DIR}
+RUN git clone https://github.com/svalinn/pydagmc.git ${SRC_DIR}/pydagmc && \
+    cd ${SRC_DIR}/pydagmc && \
+    pip install . --break-system-packages && \
+    cd && \
+    rm -rf ${BLD_DIR}/pydagmc ${SRC_DIR}/pydagmc
+
+FROM ubuntu_24.04-dagmc AS ubuntu_24.04-openmc
+
+ENV OPENMC_VERSION=v0.15.1
+ENV OPENMC_SRC_DIR=${SRC_DIR}/openmc
+ENV OPENMC_BLD_DIR=${BLD_DIR}/openmc
+
+RUN git clone -b ${OPENMC_VERSION} https://github.com/openmc-dev/openmc ${OPENMC_SRC_DIR} && \
+    mkdir -p ${OPENMC_BLD_DIR} && \
+    cd ${OPENMC_SRC_DIR} && \
+    cmake ${OPENMC_SRC_DIR} \
+        -DMOAB_DIR=${INSTALL_DIR} \
+        -DBUILD_CI_TESTS=ON \
+        -DBUILD_MW_REG_TESTS=OFF \
+        -DBUILD_STATIC_EXE=OFF \
+        -DBUILD_STATIC_LIBS=OFF \
+        -DCMAKE_Fortran_COMPILER=gfortran \
+        -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} &&\
+    make -j${CI_JOBS} && \
+    make install &&\    
+    cd ${OPENMC_SRC_DIR} &&\
+    pip install . --break-system-packages && \
+    cd && \
+    rm -rf ${OPENMC_BLD_DIR} ${OPENMC_SRC_DIR}
