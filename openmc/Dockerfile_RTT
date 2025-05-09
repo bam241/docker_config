@@ -1,7 +1,8 @@
 
 FROM bam241/ubuntu_24.04_deps AS ubuntu_24.04-moab
 
-ENV MOAB_VERSION=topology_reading
+ENV MOAB_VERSION=boundary
+# ENV MOAB_VERSION=master
 ENV MOAB_SRC_DIR=${SRC_DIR}/moab
 ENV MOAB_BLD_DIR=${BLD_DIR}/moab
 ENV PYTHONPATH="/root/.local/local/lib/python3.12/dist-packages"
@@ -54,6 +55,7 @@ RUN git clone https://github.com/svalinn/pydagmc.git ${SRC_DIR}/pydagmc && \
     pip install . --break-system-packages && \
     cd && \
     rm -rf ${BLD_DIR}/pydagmc ${SRC_DIR}/pydagmc
+RUN pip install jupyterlab pandas --break-system-packages 
 
 FROM ubuntu_24.04-dagmc AS ubuntu_24.04-openmc
 
@@ -78,3 +80,4 @@ RUN git clone -b ${OPENMC_VERSION} https://github.com/openmc-dev/openmc ${OPENMC
     pip install . --break-system-packages && \
     cd && \
     rm -rf ${OPENMC_BLD_DIR} ${OPENMC_SRC_DIR}
+
